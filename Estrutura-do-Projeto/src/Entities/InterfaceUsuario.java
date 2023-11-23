@@ -2,12 +2,11 @@ package Entities;
 
 import java.util.Scanner;
 
-
 public class InterfaceUsuario {
-    private final CadastroService cadastroService;
+    private final PacienteService pacienteService;
 
-    public InterfaceUsuario(CadastroService cadastroService) {
-        this.cadastroService = cadastroService;
+    public InterfaceUsuario(PacienteService pacienteService) {
+        this.pacienteService = pacienteService;
     }
 
     public void iniciarCadastro() {
@@ -17,10 +16,10 @@ public class InterfaceUsuario {
         String nome = scanner.nextLine();
 
         System.out.println("Digite seu CPF: ");
-        String CPF = scanner.nextLine();
+        String cpf = scanner.nextLine();
 
         System.out.println("Digite seu RG: ");
-        String RG = scanner.nextLine();
+        String rg = scanner.nextLine();
 
         System.out.println("Digite seu telefone: ");
         String telefone = scanner.nextLine();
@@ -31,14 +30,15 @@ public class InterfaceUsuario {
         System.out.println("Digite seu e-mail: ");
         String email = scanner.nextLine();
         
-        System.out.println("Digite seu numero do Cartao: ");
-        String Cartao =  scanner.nextLine();
+        System.out.println("Digite seu número do Cartao: ");
+        String cartao =  scanner.nextLine();
 
         // Realizando o cadastro
-        Cadastro cadastro = cadastroService.cadastrar(nome, CPF, RG, telefone, endereco, email, Cartao);
-    
-        System.out.println(cadastro);
-        
+        Paciente paciente = pacienteService.cadastrar(nome, cpf, rg, telefone, endereco, email, cartao);
+
+        System.out.println(paciente);
+        System.out.println("Cadastro Realizado com sucesso!! ");
+
         scanner.close();
     }
 }

@@ -1,14 +1,13 @@
 package application;
 
-
-import Entities.CadastroService;
+import Entities.PacienteService;
 import Entities.InterfaceUsuario;
 
 public class Main {
     public static void main(String[] args) {
-        CadastroService cadastroService = new CadastroService();
-        InterfaceUsuario interfaceUsuario = new InterfaceUsuario(cadastroService);
+        PacienteService pacienteService = new PacienteService();
+        InterfaceUsuario interfaceUsusario = new InterfaceUsuario(pacienteService);
 
-        interfaceUsuario.iniciarCadastro();
+        interfaceUsusario.iniciarCadastro();
     }
 }
