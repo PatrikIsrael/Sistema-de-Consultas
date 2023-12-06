@@ -135,8 +135,8 @@ public class TelaLoginAdmin extends javax.swing.JFrame {
         // Valida o login do administrador
         if (validarLoginAdmin(username, password)) {
             // Se for um administrador válido, permita o acesso à área administrativa
-            TelaCadastroEquipe telaEquipe = new TelaCadastroEquipe();
-            telaEquipe.setVisible(true);
+            EscolhaTelasAdmin tela = new EscolhaTelasAdmin();
+            tela.setVisible(true);
             dispose(); // Fechar a tela de login
         } else {
             // Se as credenciais estiverem incorretas, exiba uma mensagem de erro

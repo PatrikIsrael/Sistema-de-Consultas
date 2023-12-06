@@ -1,9 +1,17 @@
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaLoginPaciente.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaLoginAdmin.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\classes\EquipeMedica.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\MarcadorConsultas.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaCadastroPaciente.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaInicial.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\classes\Consulta.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\classes\Paciente.java
-D:\GITHUB\Sistema-de-Consultas\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaCadastroEquipe.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaInicial.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\dao\JPAUtil.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\MarcadorConsultas.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\classes\EquipeMedica.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\EscolhaTelasAdmin.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaCadastroPaciente.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaCadastroEquipe.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\classes\Paciente.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\dao\PacienteDAO.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaAdminPaciente.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaAdminConsultas.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\dao\EquipeMedicaDAO.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaLoginPaciente.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaLoginAdmin.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\TelaAdminEquipe.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\dao\ConsultaDAO.java
+D:\Ciencia da computação\Técnico Desenvolvimento de Software\Projeto integrador\Atividade05\SistemaDeConsulta\src\main\java\br\com\sistemadeconsulta\classes\Consulta.java

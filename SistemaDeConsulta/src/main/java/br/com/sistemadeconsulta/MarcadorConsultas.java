@@ -1,7 +1,12 @@
-
 package br.com.sistemadeconsulta;
 
+import br.com.sistemadeconsulta.classes.Consulta;
 import br.com.sistemadeconsulta.classes.EquipeMedica;
+import br.com.sistemadeconsulta.dao.ConsultaDAO;
+import br.com.sistemadeconsulta.dao.EquipeMedicaDAO;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,28 +19,61 @@ import javax.swing.JOptionPane;
  */
 public class MarcadorConsultas extends javax.swing.JFrame {
 
+    private final ConsultaDAO consultaDAO;
+    private final EquipeMedicaDAO equipeMedicaDAO;
     private Date dataSelecionada;
-    
+
     public MarcadorConsultas() {
         initComponents();
-        
         setLocationRelativeTo(null);
-       carregarEquipesMedicas(); // Método para carregar as equipes médicas ao iniciar o formulário
+        consultaDAO = new ConsultaDAO();
+        equipeMedicaDAO = new EquipeMedicaDAO();
+        carregarEquipesMedicas();
+        carregarHoras();
+
     }
-    // Método para carregar as equipes médicas no jboxEquipeMedica
+
     private void carregarEquipesMedicas() {
-        List<EquipeMedica> equipesMedicas = EquipeMedica.getEquipesMedicas();
-        
-        // Criar um array de strings para armazenar os nomes das equipes médicas
-        String[] nomesEquipes = new String[equipesMedicas.size()];
-        
-        for (int i = 0; i < equipesMedicas.size(); i++) {
-            nomesEquipes[i] = equipesMedicas.get(i).getNomeMedico() + " - " + equipesMedicas.get(i).getEspecialidadeMedica();
+        try {
+            List<EquipeMedica> equipesMedicas = equipeMedicaDAO.buscarTodasEquipesMedicas();
+
+            if (equipesMedicas != null) {
+                String[] nomesEquipes = new String[equipesMedicas.size()];
+
+                for (int i = 0; i < equipesMedicas.size(); i++) {
+                    nomesEquipes[i] = equipesMedicas.get(i).getNomeMedico() + " - " + equipesMedicas.get(i).getEspecialidadeMedica();
+                }
+
+                jboxEquipeMedica.setModel(new DefaultComboBoxModel<>(nomesEquipes));
+            } else {
+                // Tratar caso não seja possível carregar as equipes médicas
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
         }
-        
-        // Definir o modelo do ComboBox com os nomes das equipes médicas
-        jboxEquipeMedica.setModel(new DefaultComboBoxModel<>(nomesEquipes));
     }
+
+    private void carregarHoras() {
+        String[] horas = {"08:00", "09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00"};
+        jComboBoxHoras.setModel(new DefaultComboBoxModel<>(horas));
+    }
+
+    private void reloadHorariosDisponiveis(String horarioOcupado) {
+        String[] novosHorarios = new String[jComboBoxHoras.getItemCount() - 1];
+        int index = 0;
+
+        for (int i = 0; i < jComboBoxHoras.getItemCount(); i++) {
+            String hora = jComboBoxHoras.getItemAt(i);
+
+            if (!hora.equals(horarioOcupado)) {
+                novosHorarios[index] = hora;
+                index++;
+            }
+        }
+
+        jComboBoxHoras.setModel(new DefaultComboBoxModel<>(novosHorarios));
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -45,10 +83,13 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         btnMarcarConsulta1 = new javax.swing.JToggleButton();
         btnSair = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
-        jDayChooser1 = new com.toedter.calendar.JDayChooser();
-        txtHora = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jboxEquipeMedica = new javax.swing.JComboBox<>();
+        btnVoltar = new javax.swing.JToggleButton();
+        jComboBoxHoras = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtNomePaciente = new javax.swing.JTextField();
+        jDayChooser1 = new com.toedter.calendar.JDayChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,40 +117,68 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         jLabel3.setText("Selecione Equipe médica");
 
         jboxEquipeMedica.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jboxEquipeMedica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jboxEquipeMedicaActionPerformed(evt);
+            }
+        });
+
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
+
+        jComboBoxHoras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxHoras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxHorasActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jLabel4.setText("Nome Paciente");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jComboBoxHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(371, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnMarcarConsulta1)
-                .addGap(91, 91, 91)
-                .addComponent(btnSair)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jboxEquipeMedica, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnMarcarConsulta1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
+                        .addComponent(btnVoltar)
+                        .addGap(69, 69, 69)
+                        .addComponent(btnSair)
+                        .addGap(21, 21, 21))
+                    .addComponent(jDayChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jboxEquipeMedica, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel3))))
-                        .addGap(0, 217, Short.MAX_VALUE))
-                    .addComponent(jDayChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGap(111, 111, 111)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtNomePaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,19 +186,24 @@ public class MarcadorConsultas extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addComponent(jDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtNomePaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBoxHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jboxEquipeMedica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSair)
-                    .addComponent(btnMarcarConsulta1))
+                    .addComponent(btnMarcarConsulta1)
+                    .addComponent(btnVoltar))
                 .addContainerGap())
         );
 
@@ -137,9 +211,7 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,50 +222,80 @@ public class MarcadorConsultas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMarcarConsulta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcarConsulta1ActionPerformed
-int diaSelecionado = jDayChooser1.getDay();
+        // Obtendo o dia selecionado do jDayChooser1
+        int diaSelecionado = jDayChooser1.getDay();
 
-// Criar um objeto Calendar
-Calendar calendar = Calendar.getInstance();
-calendar.set(Calendar.DAY_OF_MONTH, diaSelecionado);
+        // Obtendo os valores de hora e equipe médica selecionados
+        String horaSelecionadaString = (String) jComboBoxHoras.getSelectedItem();
+        String nomePaciente = txtNomePaciente.getText();
+        EquipeMedica equipeMedica = buscarEquipeMedicaPorNome(jboxEquipeMedica.getSelectedItem().toString());
 
-// Obtendo os valores de dia, mês e ano do Calendar
-int dia = calendar.get(Calendar.DAY_OF_MONTH);
-int mes = calendar.get(Calendar.MONTH) + 1; // Adicionando 1 porque o mês é base 0
-int ano = calendar.get(Calendar.YEAR);
+        // Verificação de campos vazios
+        if (horaSelecionadaString.isEmpty() || nomePaciente.isEmpty() || equipeMedica != null) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos para marcar a consulta.");
+            return;
+        }
 
-// Formatar a data selecionada
-String dataSelecionada = ano + "-" + mes + "-" + dia;
+        // Criação do objeto Calendar e definição da data
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, diaSelecionado);
+        // Adicione aqui a definição do mês e do ano caso você possua campos separados para isso.
 
-    JOptionPane.showMessageDialog(
-        this,
-        "Consulta agendada para: " + dataSelecionada,
-        "Consulta Agendada",
-        JOptionPane.INFORMATION_MESSAGE
-    );
+        // Obtendo os valores de dia, mês e ano do Calendar
+        int dia = calendar.get(Calendar.DAY_OF_MONTH);
+        int mes = calendar.get(Calendar.MONTH) + 1; // Adicionando 1 porque o mês é base 0
+        int ano = calendar.get(Calendar.YEAR);
 
-    // Recuperar a hora digitada no campo de texto txtHora
-    String hora = txtHora.getText();
+        // Tratamento de erros e conversão para data e hora
+        try {
+            LocalTime horaSelecionada = LocalTime.parse(horaSelecionadaString);
+            LocalDate dataSelecionada = LocalDate.of(ano, mes, dia);
 
-    // Recuperar a equipe médica selecionada no jboxEquipeMedica
-    String equipeMedicaSelecionada = jboxEquipeMedica.getSelectedItem().toString();
+            // Restante do seu código para agendar a consulta usando os dados obtidos
+            Consulta consulta = new Consulta();
+            consulta.setPaciente(consultaDAO.buscarPacientePorNome(nomePaciente));
+            consulta.setDataConsulta(dataSelecionada);
+            consulta.setHoraConsulta(horaSelecionada);
+            consulta.setEquipe(equipeMedica);
 
-    // Verificar se a data, hora e equipe médica foram selecionadas
-    if (dataSelecionada != null && !hora.isEmpty() && !equipeMedicaSelecionada.isEmpty()) {
-        // Simplesmente exibir uma mensagem indicando que a consulta foi agendada para os dados selecionados
-        JOptionPane.showMessageDialog(
-            this,
-            "Consulta agendada para: " + dataSelecionada + " às " + hora + " com a equipe médica: " + equipeMedicaSelecionada,
-            "Consulta Agendada",
-            JOptionPane.INFORMATION_MESSAGE
-        );
-    } else {
-        JOptionPane.showMessageDialog(this, "Preencha todos os campos para marcar a consulta.");
+            if (consultaDAO.verificarDisponibilidadeConsulta(dataSelecionada, horaSelecionada, equipeMedica)) {
+                consultaDAO.agendarConsulta(consulta);
+                JOptionPane.showMessageDialog(this, "Consulta agendada com sucesso!");
+
+                
+                TelaInicial telaInicial = new TelaInicial(); 
+                telaInicial.setVisible(true);
+                this.dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Já existe uma consulta marcada para este horário e equipe. Por favor, selecione outro horário ou equipe.");
+            }
+        } catch (DateTimeParseException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao converter hora ou data.");
+        }
     }
+
+    private EquipeMedica buscarEquipeMedicaPorNome(String nomeEquipe) {
+        return equipeMedicaDAO.buscarEquipeMedicaPorNome(nomeEquipe);
+
     }//GEN-LAST:event_btnMarcarConsulta1ActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        TelaLoginPaciente pacientelogin = new TelaLoginPaciente();
+        pacientelogin.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void jboxEquipeMedicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxEquipeMedicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jboxEquipeMedicaActionPerformed
+
+    private void jComboBoxHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxHorasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxHorasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,16 +311,24 @@ String dataSelecionada = ano + "-" + mes + "-" + dia;
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MarcadorConsultas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MarcadorConsultas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MarcadorConsultas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MarcadorConsultas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -233,12 +343,15 @@ String dataSelecionada = ano + "-" + mes + "-" + dia;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnMarcarConsulta1;
     private javax.swing.JToggleButton btnSair;
+    private javax.swing.JToggleButton btnVoltar;
+    private javax.swing.JComboBox<String> jComboBoxHoras;
     private com.toedter.calendar.JDayChooser jDayChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> jboxEquipeMedica;
-    private javax.swing.JFormattedTextField txtHora;
+    private javax.swing.JTextField txtNomePaciente;
     // End of variables declaration//GEN-END:variables
 }

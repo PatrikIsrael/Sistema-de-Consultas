@@ -1,7 +1,7 @@
-
 package br.com.sistemadeconsulta;
 
 import br.com.sistemadeconsulta.classes.Paciente;
+import br.com.sistemadeconsulta.dao.PacienteDAO;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,7 +15,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
      */
     public TelaCadastroPaciente() {
         initComponents();
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -166,38 +166,49 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void brnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnSalvarActionPerformed
-       String nome = txtNome.getText();
-String cpf = txtCPF.getText();
-String rg = txtRG.getText();
-String email = txtEmail.getText();
-String numeroCartao = txtCartao.getText();
+        String nome = txtNome.getText();
+        String cpf = txtCPF.getText();
+        String rg = txtRG.getText();
+        String email = txtEmail.getText();
+        String numeroCartao = txtCartao.getText();
 
 // Verifica se todos os campos estão preenchidos
-if (!nome.isEmpty() && !cpf.isEmpty() && !rg.isEmpty() && !email.isEmpty() && !numeroCartao.isEmpty()) {
+        if (!nome.isEmpty() && !cpf.isEmpty() && !rg.isEmpty() && !email.isEmpty() && !numeroCartao.isEmpty()) {
 
-    // Cria um objeto Paciente com os dados fornecidos
-    Paciente novoPaciente = new Paciente(nome, cpf, rg, email, numeroCartao);
+            // Cria um objeto Paciente com os dados fornecidos
+            Paciente novoPaciente = new Paciente();
+            novoPaciente.setNome(nome);
+            novoPaciente.setCpf(cpf);
+            novoPaciente.setRg(rg);
+            novoPaciente.setEmail(email);
+            novoPaciente.setNumeroCartao(numeroCartao);
 
-    // Adiciona o novo paciente à lista de pacientes cadastrados
-    Paciente.cadastrarPaciente(novoPaciente);
+            // Cria uma instância do PacienteDAO
+            PacienteDAO pacienteDAO = new PacienteDAO();
 
-    // Exibe mensagem de sucesso e fecha a tela de cadastro
-    JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-    dispose(); // Fecha a tela de cadastro após o cadastro ser concluído
+            try {
+                // Chama o método salvarPaciente do PacienteDAO
+                pacienteDAO.salvarPaciente(novoPaciente);
 
-    // Abre a tela de login do paciente
-    TelaLoginPaciente telaLogin = new TelaLoginPaciente();
-    telaLogin.setVisible(true);
-} else {
-    JOptionPane.showMessageDialog(this, "Preencha todos os campos para cadastrar o paciente.");
-}
+                // Exibe mensagem de sucesso e fecha a tela de cadastro
+                JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+                dispose(); // Fecha a tela de cadastro após o cadastro ser concluído
 
+                // Abre a tela de login do paciente
+                TelaLoginPaciente telaLogin = new TelaLoginPaciente();
+                telaLogin.setVisible(true);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos para cadastrar o paciente.");
+        }
     }//GEN-LAST:event_brnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-       TelaLoginPaciente  telapaciente = new TelaLoginPaciente();
-       telapaciente.setVisible(true);
-       dispose();
+        TelaLoginPaciente telapaciente = new TelaLoginPaciente();
+        telapaciente.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**

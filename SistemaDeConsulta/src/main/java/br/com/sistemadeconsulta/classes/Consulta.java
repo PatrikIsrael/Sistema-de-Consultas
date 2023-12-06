@@ -1,63 +1,79 @@
-
 package br.com.sistemadeconsulta.classes;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
+
+@Entity
+@Table(name = "Consulta")
 public class Consulta {
-    private Date dataConsulta;
-    private String nomePaciente;
-    private String nomeMedico;
-    private String especialidadeMedica;
-    private String nomeEnfermeira;
 
-    // Construtor
-    public Consulta(Date dataConsulta) {
-        this.dataConsulta = dataConsulta;
-        this.nomePaciente = nomePaciente;
-        this.nomeMedico = nomeMedico;
-        this.especialidadeMedica = especialidadeMedica;
-        this.nomeEnfermeira = nomeEnfermeira;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_consulta")
+    private int idConsulta;
+
+    @ManyToOne
+    @JoinColumn(name = "id_paciente")
+    private Paciente paciente;
+
+    @Column(name = "data_consulta")
+    private LocalDate dataConsulta;
+
+    @Column(name = "hora_consulta")
+    private LocalTime horaConsulta;
+
+    @ManyToOne
+    @JoinColumn(name = "id_equipe_medica")
+    private EquipeMedica equipe;
+
+    public int getIdConsulta() {
+        return idConsulta;
     }
 
-    // Getters e Setters
-    public Date getDataConsulta() {
+    public void setIdConsulta(int idConsulta) {
+        this.idConsulta = idConsulta;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public LocalDate getDataConsulta() {
         return dataConsulta;
     }
 
-    public void setDataConsulta(Date dataConsulta) {
-        this.dataConsulta = dataConsulta;
+    public void setDataConsulta(LocalDate dataConsulta) {
+        if (dataConsulta != null) {
+            this.dataConsulta = dataConsulta;
+        } else {
+            throw new IllegalArgumentException("A data da consulta não pode ser nula.");
+        }
     }
 
-    public String getNomePaciente() {
-        return nomePaciente;
+    public LocalTime getHoraConsulta() {
+        return horaConsulta;
     }
 
-    public void setNomePaciente(String nomePaciente) {
-        this.nomePaciente = nomePaciente;
+    public void setHoraConsulta(LocalTime horaConsulta) {
+        this.horaConsulta = horaConsulta;
     }
 
-    public String getNomeMedico() {
-        return nomeMedico;
+    public EquipeMedica getEquipe() {
+        return equipe;
     }
 
-    public void setNomeMedico(String nomeMedico) {
-        this.nomeMedico = nomeMedico;
+    public void setEquipe(EquipeMedica equipe) {
+        this.equipe = equipe;
     }
 
-    public String getEspecialidadeMedica() {
-        return especialidadeMedica;
+    public String formatarDataHoraConsulta() {
+        return "Hora da Consulta: " + horaConsulta;
     }
 
-    public void setEspecialidadeMedica(String especialidadeMedica) {
-        this.especialidadeMedica = especialidadeMedica;
-    }
-
-    public String getNomeEnfermeira() {
-        return nomeEnfermeira;
-    }
-
-    public void setNomeEnfermeira(String nomeEnfermeira) {
-        this.nomeEnfermeira = nomeEnfermeira;
-    }
 }
-

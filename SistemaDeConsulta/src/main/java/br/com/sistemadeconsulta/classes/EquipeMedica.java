@@ -1,33 +1,39 @@
 package br.com.sistemadeconsulta.classes;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "EquipeMedica")
 public class EquipeMedica {
+    
+    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_equipe_medica")
+    private Long idEquipe;
+
+    @Column(name = "nome_medico")
     private String nomeMedico;
+
+    @Column(name = "especialidade")
     private String especialidadeMedica;
+
+    @Column(name = "nome_enfermeira")
     private String nomeEnfermeira;
+    
+    @OneToMany(mappedBy = "equipe")
+    private List<Consulta> consultas;
 
-    private static List<EquipeMedica> equipesMedicas = new ArrayList<>();
-
-    // Método para cadastrar uma nova equipe médica
-    public static boolean cadastrarEquipeMedica(EquipeMedica equipeMedica) {
-        return equipesMedicas.add(equipeMedica);
+    public Long getIdEquipe() {
+        return idEquipe;
     }
 
-    // Método para obter a lista de equipes médicas cadastradas
-    public static List<EquipeMedica> getEquipesMedicas() {
-        return equipesMedicas;
+    public void setIdEquipe(Long idEquipe) {
+        this.idEquipe = idEquipe;
     }
 
-    // Construtor
-    public EquipeMedica(String nomeMedico, String especialidadeMedica, String nomeEnfermeira) {
-        this.nomeMedico = nomeMedico;
-        this.especialidadeMedica = especialidadeMedica;
-        this.nomeEnfermeira = nomeEnfermeira;
-    }
-
-    // Getters e Setters
     public String getNomeMedico() {
         return nomeMedico;
     }
@@ -51,4 +57,6 @@ public class EquipeMedica {
     public void setNomeEnfermeira(String nomeEnfermeira) {
         this.nomeEnfermeira = nomeEnfermeira;
     }
+
+  
 }

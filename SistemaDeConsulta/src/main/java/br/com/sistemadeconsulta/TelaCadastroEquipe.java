@@ -1,6 +1,8 @@
 package br.com.sistemadeconsulta;
 
 import br.com.sistemadeconsulta.classes.EquipeMedica;
+import br.com.sistemadeconsulta.dao.EquipeMedicaDAO;
+import jakarta.persistence.Id;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,7 +16,7 @@ public class TelaCadastroEquipe extends javax.swing.JFrame {
      */
     public TelaCadastroEquipe() {
         initComponents();
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -156,36 +158,32 @@ public class TelaCadastroEquipe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // Obtendo os dados inseridos nos campos de texto
-        String nomeMedico = txtNomeMedico.getText();
-        String especialidade = txtEspecialidade.getText();
-        String nomeEnfermeiro = txtNomeEnfermeiro.getText();
+ try {
+        // Criar uma nova instância de EquipeMedica
+        EquipeMedica novaEquipe = new EquipeMedica();
 
-// Verificando se todos os campos foram preenchidos
-        if (nomeMedico.isEmpty() || especialidade.isEmpty() || nomeEnfermeiro.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
-        } else {
-            // Criando uma nova instância da classe EquipeMedica com os dados inseridos
-            EquipeMedica equipeMedica = new EquipeMedica(nomeMedico, especialidade, nomeEnfermeiro);
+        // Obter os valores dos campos de texto e atribuir à novaEquipe
+        novaEquipe.setNomeMedico(txtNomeMedico.getText());
+        novaEquipe.setEspecialidadeMedica(txtEspecialidade.getText());
+        novaEquipe.setNomeEnfermeira(txtNomeEnfermeiro.getText());
 
-            // Cadastrando a equipe médica
-            boolean equipeCadastrada = EquipeMedica.cadastrarEquipeMedica(equipeMedica);
+        // Instanciar o DAO e chamar o método salvar passando a novaEquipe
+        EquipeMedicaDAO equipeMedicaDAO = new EquipeMedicaDAO();
+        equipeMedicaDAO.salvar(novaEquipe);
 
-            if (equipeCadastrada) {
-                JOptionPane.showMessageDialog(this, "Equipe médica cadastrada com sucesso!");
-                // Limpar os campos após o cadastro
-                txtNomeMedico.setText("");
-                txtEspecialidade.setText("");
-                txtNomeEnfermeiro.setText("");
+        // Mostrar mensagem de sucesso
+        JOptionPane.showMessageDialog(this, "Equipe médica cadastrada com sucesso!");
+        dispose(); // Fechar a janela após o cadastro
 
-                // Abrir a tela inicial
-                TelaInicial inicial = new TelaInicial();
-                inicial.setVisible(true);
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Erro ao cadastrar a equipe médica.");
-            }
-        }
+        // Limpar os campos após o cadastro
+        txtNomeMedico.setText("");
+        txtEspecialidade.setText("");
+        txtNomeEnfermeiro.setText("");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Ocorreu uma falha ao cadastrar a equipe médica:\n" + e.getMessage());
+        dispose(); // Fechar a janela em caso de falha
+    }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed

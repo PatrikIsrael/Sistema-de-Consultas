@@ -1,6 +1,7 @@
 package br.com.sistemadeconsulta;
 
-import br.com.sistemadeconsulta.classes.Paciente;
+
+import br.com.sistemadeconsulta.dao.PacienteDAO;
 import javax.swing.JOptionPane;
 
 /**
@@ -140,23 +141,34 @@ public class TelaLoginPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+  String nome = txtNome.getText();
+    String cpf = txtCPF.getText();
 
-        String nome = txtNome.getText();
-        String cpf = txtCPF.getText();
+    // Realizar a busca no banco de dados para verificar se o paciente existe
+    boolean pacienteCadastrado = validarLogin(nome, cpf);
 
-        boolean pacienteCadastrado = Paciente.validarLogin(nome, cpf);
-
-        if (pacienteCadastrado) {
+    if (pacienteCadastrado) {
             JOptionPane.showMessageDialog(this, "Paciente encontrado!");
+
+            // Criar uma instância de MarcadorConsultas
             MarcadorConsultas calendario = new MarcadorConsultas();
+            
+      
             calendario.setVisible(true);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Paciente não cadastrado ou dados incorretos.");
             // Ação para lidar com paciente não cadastrado ou dados incorretos
         }
+    
+}
 
-
+// Método para validar o login do paciente no banco de dados
+private boolean validarLogin(String nome, String cpf) {
+   
+    PacienteDAO pacienteDAO = new PacienteDAO();
+    return pacienteDAO.verificarExistenciaPaciente(nome, cpf);
+    
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
