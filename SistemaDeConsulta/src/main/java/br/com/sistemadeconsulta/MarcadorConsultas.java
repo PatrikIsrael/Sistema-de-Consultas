@@ -74,6 +74,19 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         jComboBoxHoras.setModel(new DefaultComboBoxModel<>(novosHorarios));
     }
 
+  private EquipeMedica buscarEquipeMedicaSelecionada() {
+    try {
+        String nomeEquipeSelecionada = (String) jboxEquipeMedica.getSelectedItem();
+        String nomeMedicoSelecionado = nomeEquipeSelecionada.split(" - ")[0];
+        // Busca a equipe médica pelo nome do médico selecionado
+        return equipeMedicaDAO.buscarEquipeMedicaPorNome(nomeMedicoSelecionado);
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        return null;
+    }
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -222,16 +235,17 @@ public class MarcadorConsultas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMarcarConsulta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcarConsulta1ActionPerformed
-        // Obtendo o dia selecionado do jDayChooser1
+
         int diaSelecionado = jDayChooser1.getDay();
+
 
         // Obtendo os valores de hora e equipe médica selecionados
         String horaSelecionadaString = (String) jComboBoxHoras.getSelectedItem();
         String nomePaciente = txtNomePaciente.getText();
-        EquipeMedica equipeMedica = buscarEquipeMedicaPorNome(jboxEquipeMedica.getSelectedItem().toString());
+        EquipeMedica equipeMedica = buscarEquipeMedicaSelecionada();
 
-        // Verificação de campos vazios
-        if (horaSelecionadaString.isEmpty() || nomePaciente.isEmpty() || equipeMedica != null) {
+        // Verificação de campos vazios e equipe médica encontrada
+        if (horaSelecionadaString.isEmpty() || nomePaciente.isEmpty() || equipeMedica == null) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos para marcar a consulta.");
             return;
         }
@@ -239,19 +253,16 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         // Criação do objeto Calendar e definição da data
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, diaSelecionado);
-        // Adicione aqui a definição do mês e do ano caso você possua campos separados para isso.
 
         // Obtendo os valores de dia, mês e ano do Calendar
         int dia = calendar.get(Calendar.DAY_OF_MONTH);
-        int mes = calendar.get(Calendar.MONTH) + 1; // Adicionando 1 porque o mês é base 0
+        int mes = calendar.get(Calendar.MONTH) + 1;
         int ano = calendar.get(Calendar.YEAR);
 
-        // Tratamento de erros e conversão para data e hora
         try {
             LocalTime horaSelecionada = LocalTime.parse(horaSelecionadaString);
             LocalDate dataSelecionada = LocalDate.of(ano, mes, dia);
 
-            // Restante do seu código para agendar a consulta usando os dados obtidos
             Consulta consulta = new Consulta();
             consulta.setPaciente(consultaDAO.buscarPacientePorNome(nomePaciente));
             consulta.setDataConsulta(dataSelecionada);
@@ -262,10 +273,9 @@ public class MarcadorConsultas extends javax.swing.JFrame {
                 consultaDAO.agendarConsulta(consulta);
                 JOptionPane.showMessageDialog(this, "Consulta agendada com sucesso!");
 
-                
-                TelaInicial telaInicial = new TelaInicial(); 
+                TelaInicial telaInicial = new TelaInicial();
                 telaInicial.setVisible(true);
-                this.dispose(); 
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Já existe uma consulta marcada para este horário e equipe. Por favor, selecione outro horário ou equipe.");
             }
@@ -276,6 +286,7 @@ public class MarcadorConsultas extends javax.swing.JFrame {
 
     private EquipeMedica buscarEquipeMedicaPorNome(String nomeEquipe) {
         return equipeMedicaDAO.buscarEquipeMedicaPorNome(nomeEquipe);
+
 
     }//GEN-LAST:event_btnMarcarConsulta1ActionPerformed
 

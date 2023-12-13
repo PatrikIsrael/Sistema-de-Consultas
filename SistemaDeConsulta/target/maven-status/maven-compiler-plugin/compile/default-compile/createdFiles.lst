@@ -48,6 +48,7 @@ br\com\sistemadeconsulta\EscolhaTelasAdmin$1.class
 br\com\sistemadeconsulta\MarcadorConsultas$1.class
 br\com\sistemadeconsulta\TelaCadastroEquipe$2.class
 br\com\sistemadeconsulta\TelaLoginPaciente$1.class
+br\com\sistemadeconsulta\TelaAdminPaciente$7.class
 br\com\sistemadeconsulta\TelaAdminConsultas$2.class
 br\com\sistemadeconsulta\EscolhaTelasAdmin$4.class
 br\com\sistemadeconsulta\TelaCadastroPaciente$1.class

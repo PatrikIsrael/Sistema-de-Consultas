@@ -47,17 +47,18 @@ public class PacienteDAO {
         }
     }
 
-    public void atualizarPaciente(Paciente paciente) {
-        EntityTransaction transaction = em.getTransaction();
+    public boolean atualizarPaciente(Paciente paciente) {
         try {
-            transaction.begin();
+            em.getTransaction().begin();
             em.merge(paciente);
-            transaction.commit();
+            em.getTransaction().commit();
+            return true;
         } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
             }
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -83,6 +84,20 @@ public class PacienteDAO {
             return null;
         }
     }
+    
+  public Paciente buscarPacientePorId(long id_paciente) {
+    try {
+        Query query = em.createQuery("SELECT p FROM Paciente p WHERE p.id = :id");
+        query.setParameter("id", id_paciente);
+        return (Paciente) query.getSingleResult();
+    } catch (NoResultException e) {
+        return null;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
 
     public boolean verificarExistenciaPaciente(String nome, String cpf) {
         try {

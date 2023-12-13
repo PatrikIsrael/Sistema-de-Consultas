@@ -2,6 +2,11 @@ package br.com.sistemadeconsulta;
 
 import br.com.sistemadeconsulta.classes.Paciente;
 import br.com.sistemadeconsulta.dao.PacienteDAO;
+import com.google.protobuf.TextFormat.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,6 +47,8 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         txtCartao = new javax.swing.JTextField();
         brnSalvar = new javax.swing.JToggleButton();
         btnVoltar = new javax.swing.JToggleButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtNascimento = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,42 +84,50 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jLabel7.setText("Data Nascimento :");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCartao))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
-                            .addComponent(txtCPF)
-                            .addComponent(txtRG)
-                            .addComponent(txtEmail))))
-                .addContainerGap(120, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(brnSalvar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnVoltar)
                 .addGap(44, 44, 44))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(112, 112, 112)
+                            .addComponent(jLabel1))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtCartao))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel5)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel3))))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                                .addComponent(txtCPF)
+                                .addComponent(txtRG)
+                                .addComponent(txtEmail))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,11 +137,11 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(167, 167, 167))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(157, 157, 157))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -137,12 +152,16 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(31, 31, 31)))
+                            .addComponent(jLabel5))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtCartao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(brnSalvar)
                     .addComponent(btnVoltar))
@@ -170,39 +189,46 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         String cpf = txtCPF.getText();
         String rg = txtRG.getText();
         String email = txtEmail.getText();
+        String dataNascimentoString = txtNascimento.getText();
         String numeroCartao = txtCartao.getText();
 
 // Verifica se todos os campos estão preenchidos
-        if (!nome.isEmpty() && !cpf.isEmpty() && !rg.isEmpty() && !email.isEmpty() && !numeroCartao.isEmpty()) {
-
-            // Cria um objeto Paciente com os dados fornecidos
-            Paciente novoPaciente = new Paciente();
-            novoPaciente.setNome(nome);
-            novoPaciente.setCpf(cpf);
-            novoPaciente.setRg(rg);
-            novoPaciente.setEmail(email);
-            novoPaciente.setNumeroCartao(numeroCartao);
-
-            // Cria uma instância do PacienteDAO
-            PacienteDAO pacienteDAO = new PacienteDAO();
-
+        if (!nome.isEmpty() && !cpf.isEmpty() && !rg.isEmpty() && !email.isEmpty() && !dataNascimentoString.isEmpty() && !numeroCartao.isEmpty()) {
             try {
-                // Chama o método salvarPaciente do PacienteDAO
-                pacienteDAO.salvarPaciente(novoPaciente);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat.setLenient(false);
 
-                // Exibe mensagem de sucesso e fecha a tela de cadastro
-                JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-                dispose(); // Fecha a tela de cadastro após o cadastro ser concluído
+                Date dataNascimento = dateFormat.parse(dataNascimentoString);
 
-                // Abre a tela de login do paciente
-                TelaLoginPaciente telaLogin = new TelaLoginPaciente();
-                telaLogin.setVisible(true);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
+                Paciente novoPaciente = new Paciente();
+                novoPaciente.setNome(nome);
+                novoPaciente.setCpf(cpf);
+                novoPaciente.setRg(rg);
+                novoPaciente.setEmail(email);
+                novoPaciente.setDataNascimento(dataNascimento);
+                novoPaciente.setNumeroCartao(numeroCartao);
+
+                PacienteDAO pacienteDAO = new PacienteDAO();
+
+                try {
+                    // Chama o método salvarPaciente do PacienteDAO
+                    pacienteDAO.salvarPaciente(novoPaciente);
+
+                    JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+                    dispose();
+
+                    TelaLoginPaciente telaLogin = new TelaLoginPaciente();
+                    telaLogin.setVisible(true);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
+                }
+            } catch (java.text.ParseException ex) {
+                Logger.getLogger(TelaCadastroPaciente.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos para cadastrar o paciente.");
         }
+
     }//GEN-LAST:event_brnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -255,11 +281,14 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCPF;
     private javax.swing.JTextField txtCartao;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtNascimento;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtRG;
     // End of variables declaration//GEN-END:variables
+
 }

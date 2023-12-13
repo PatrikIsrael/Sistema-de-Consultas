@@ -57,6 +57,8 @@ public class EquipeMedica {
     public void setNomeEnfermeira(String nomeEnfermeira) {
         this.nomeEnfermeira = nomeEnfermeira;
     }
+    
+    
 
   
 }

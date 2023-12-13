@@ -5,12 +5,14 @@ import br.com.sistemadeconsulta.classes.EquipeMedica;
 import br.com.sistemadeconsulta.classes.Paciente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaDAO {
@@ -93,6 +95,18 @@ public class ConsultaDAO {
             handleTransactionException(transaction, e);
         }
     }
+   
+   
+public List<EquipeMedica> buscarEquipeMedicaPorNome(String nomeEquipe) {
+    try {
+        TypedQuery<EquipeMedica> query = em.createQuery("SELECT e FROM EquipeMedica e WHERE e.nomeMedico = :nome", EquipeMedica.class);
+        query.setParameter("nome", nomeEquipe);
+        return query.getResultList(); // Retorna uma lista de equipes correspondentes ao nome
+    } catch (NoResultException ex) {
+        return new ArrayList<>(); 
+    }
+
+}
 
   
 
@@ -124,17 +138,7 @@ public class ConsultaDAO {
         }
     }
 
-    public EquipeMedica buscarEquipePorNome(String nomeEquipe) {
-        try {
-            Query query = em.createQuery("SELECT e FROM EquipeMedica e WHERE e.nomeMedico = :nome");
-            query.setParameter("nome", nomeEquipe);
-            List<EquipeMedica> equipes = query.getResultList();
-            return equipes.isEmpty() ? null : equipes.get(0);
-        } catch (Exception e) {
-            handleQueryException(e);
-            return null;
-        }
-    }
+
     
       public Consulta buscarConsultaPorId(int idConsulta) {
         try {

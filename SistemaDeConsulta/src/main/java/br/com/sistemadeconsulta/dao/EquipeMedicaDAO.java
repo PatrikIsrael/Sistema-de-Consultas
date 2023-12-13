@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import br.com.sistemadeconsulta.classes.EquipeMedica;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
@@ -34,7 +36,6 @@ public class EquipeMedicaDAO {
         em.close();
         emf.close();
     }
-
 
     public int atualizar(EquipeMedica equipeMedica) {
         try {
@@ -120,8 +121,8 @@ public class EquipeMedicaDAO {
             return null;
         }
     }
-    
-     public int salvar(EquipeMedica equipeMedica) {
+
+    public int salvar(EquipeMedica equipeMedica) {
         try {
             em.getTransaction().begin();
             em.persist(equipeMedica);
@@ -138,11 +139,10 @@ public class EquipeMedicaDAO {
             TypedQuery<EquipeMedica> query = em.createQuery(
                     "SELECT e FROM EquipeMedica e WHERE e.nomeMedico = :nomeMedico", EquipeMedica.class);
             query.setParameter("nomeMedico", nomeMedico);
-
-            return query.getResultList().stream().findFirst().orElse(null);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return query.getSingleResult(); // Retorna um único resultado
+        } catch (NoResultException ex) {
             return null;
         }
     }
+
 }

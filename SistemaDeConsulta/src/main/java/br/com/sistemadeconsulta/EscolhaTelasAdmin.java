@@ -129,7 +129,7 @@ public class EscolhaTelasAdmin extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
        TelaInicial inicio = new TelaInicial();
        inicio.setVisible(true);
-       this.dispose();
+       dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultasActionPerformed

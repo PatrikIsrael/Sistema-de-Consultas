@@ -1,6 +1,7 @@
 package br.com.sistemadeconsulta;
 
 import br.com.sistemadeconsulta.classes.Consulta;
+import br.com.sistemadeconsulta.classes.EquipeMedica;
 import br.com.sistemadeconsulta.classes.Paciente;
 import br.com.sistemadeconsulta.dao.ConsultaDAO;
 import br.com.sistemadeconsulta.dao.PacienteDAO;
@@ -240,30 +241,36 @@ public class TelaAdminConsultas extends javax.swing.JFrame {
         }
     }
 
-   private void preencheTabelaConsultas(List<Consulta> consultas) {
+    private void preencheTabelaConsultas(List<Consulta> consultas) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
 
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    modelo.setRowCount(0); // Limpa a tabela
+        for (Consulta consulta : consultas) {
+            int idConsulta = consulta.getIdConsulta();
+            String nomePaciente = "";
+            String nomeEquipe = "";
+            String dataConsulta = "";
+            String horaConsulta = "";
 
-    for (Consulta consulta : consultas) {
-        int idConsulta = consulta.getIdConsulta();
-        String nomePaciente = "";
-        String nomeEquipe = ""; // Nome da equipe médica
-        
-        if (consulta.getPaciente() != null) {
-            nomePaciente = consulta.getPaciente().getNome(); // Obtém o nome do paciente
+            if (consulta.getPaciente() != null) {
+                nomePaciente = consulta.getPaciente().getNome();
+            }
+
+            
+            if (consulta.getEquipe() != null) {
+                nomeEquipe = consulta.getEquipe().getNomeMedico(); 
+            }
+
+            if (consulta.getDataConsulta() != null) {
+                dataConsulta = consulta.getDataConsulta().toString();
+            }
+
+            if (consulta.getHoraConsulta() != null) {
+                horaConsulta = consulta.getHoraConsulta().toString();
+            }
+
+            modelo.addRow(new Object[]{idConsulta, nomePaciente, nomeEquipe, dataConsulta, horaConsulta});
         }
-
-        if (consulta.getEquipe() != null) {
-            nomeEquipe = consulta.getEquipe().getNomeMedico(); // Modifique para o nome da equipe
-        }
-
-        String dataConsulta = (consulta.getDataConsulta() != null) ? consulta.getDataConsulta().toString() : "";
-        String horaConsulta = (consulta.getHoraConsulta() != null) ? consulta.getHoraConsulta().toString() : "";
-
-        // Adiciona os dados na tabela, incluindo o nome da equipe
-        modelo.addRow(new Object[]{idConsulta, nomePaciente, nomeEquipe, dataConsulta, horaConsulta});
-    }
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -275,38 +282,38 @@ public class TelaAdminConsultas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnVoltarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
- int linhaSelecionada = jTable1.getSelectedRow();
+        int linhaSelecionada = jTable1.getSelectedRow();
 
-if (linhaSelecionada >= 0) {
-    Object valorCelula = jTable1.getValueAt(linhaSelecionada, 0); // Considerando que a coluna 0 é a coluna dos IDs de consulta
+        if (linhaSelecionada >= 0) {
+            Object valorCelula = jTable1.getValueAt(linhaSelecionada, 0);
 
-    // Verifica se o valor da célula não é nulo e se é uma instância de Integer
-    if (valorCelula != null && valorCelula instanceof Integer) {
-        int idConsulta = (int) valorCelula;
+            // Verifica se o valor da célula não é nulo e se é uma instância de Integer
+            if (valorCelula != null && valorCelula instanceof Integer) {
+                int idConsulta = (int) valorCelula;
 
-        try {
-            ConsultaDAO consultaDAO = new ConsultaDAO();
-            Consulta consultaParaExcluir = consultaDAO.buscarConsultaPorId(idConsulta);
+                try {
+                    ConsultaDAO consultaDAO = new ConsultaDAO();
+                    Consulta consultaParaExcluir = consultaDAO.buscarConsultaPorId(idConsulta);
 
-            if (consultaParaExcluir != null) {
-                consultaDAO.removerConsulta(consultaParaExcluir);
-                JOptionPane.showMessageDialog(this, "Consulta excluída com sucesso!");
-                
-                // Atualiza a tabela após a exclusão
-                List<Consulta> consultasAtualizadas = consultaDAO.listarConsultas();
-                preencheTabelaConsultas(consultasAtualizadas);
+                    if (consultaParaExcluir != null) {
+                        consultaDAO.removerConsulta(consultaParaExcluir);
+                        JOptionPane.showMessageDialog(this, "Consulta excluída com sucesso!");
+
+                        // Atualiza a tabela após a exclusão
+                        List<Consulta> consultasAtualizadas = consultaDAO.listarConsultas();
+                        preencheTabelaConsultas(consultasAtualizadas);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Consulta não encontrada para exclusão.");
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Falha ao excluir consulta:\n" + e.getMessage());
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "Consulta não encontrada para exclusão.");
+                JOptionPane.showMessageDialog(this, "Valor da célula não é um ID de consulta válido.");
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Falha ao excluir consulta:\n" + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma consulta para excluir.");
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Valor da célula não é um ID de consulta válido.");
-    }
-} else {
-    JOptionPane.showMessageDialog(this, "Selecione uma consulta para excluir.");
-}
 
 
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -318,7 +325,6 @@ if (linhaSelecionada >= 0) {
             ConsultaDAO consultaDAO = new ConsultaDAO();
             List<Consulta> consultasAtualizadas = consultaDAO.listarConsultas(); // Obter as consultas atualizadas
 
-            // Chame o método para preencher a tabela com as consultas atualizadas
             preencheTabelaConsultas(consultasAtualizadas);
 
             JOptionPane.showMessageDialog(this, "Dados atualizados com sucesso!");

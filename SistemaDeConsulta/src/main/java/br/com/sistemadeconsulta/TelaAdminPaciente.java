@@ -2,9 +2,12 @@ package br.com.sistemadeconsulta;
 
 import br.com.sistemadeconsulta.classes.Paciente;
 import br.com.sistemadeconsulta.dao.PacienteDAO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.Date;
 
 /**
  *
@@ -18,7 +21,24 @@ public class TelaAdminPaciente extends javax.swing.JFrame {
     public TelaAdminPaciente() {
         initComponents();
         setLocationRelativeTo(null);
-         preencheTabelaPacientes(new PacienteDAO().listarPacientes());
+        preencheTabelaPacientes(new PacienteDAO().listarPacientes());
+    }
+
+    private int getIdPacienteSelecionado() {
+        int idPacienteSelecionado = -1; // Valor padrão para indicar que nenhum paciente foi selecionado
+        int linhaSelecionada = jTable1.getSelectedRow();
+
+        if (linhaSelecionada >= 0) {
+            try {
+                idPacienteSelecionado = Integer.parseInt(jTable1.getValueAt(linhaSelecionada, 0).toString());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao obter ID do paciente: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um paciente na tabela.");
+        }
+
+        return idPacienteSelecionado;
     }
 
     /**
@@ -59,22 +79,39 @@ public class TelaAdminPaciente extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nome Paciente", "CPF", "RG" ,"Email", "Namero Cartao"
+                "Id Paciente", "Nome Paciente", "CPF ", "RG", "Email", "Numero Cartão"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel4.setText("Dados");
@@ -254,42 +291,46 @@ public class TelaAdminPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
-        int linhaSelecionada = jTable1.getSelectedRow();
+         int idPaciente = getIdPacienteSelecionado();
+        if (idPaciente != -1) {
+            PacienteDAO pacienteDAO = new PacienteDAO();
+            Paciente pacienteSelecionado = pacienteDAO.buscarPacientePorId(idPaciente);
 
-        if (linhaSelecionada >= 0) {
-            String novoNome = JOptionPane.showInputDialog(this, "Novo Nome:");
-            String novoCPF = JOptionPane.showInputDialog(this, "Novo CPF:");
-            // Adicione outros campos que você deseja atualizar
+            if (pacienteSelecionado != null) {
+                try {
+                    String novoNome = JOptionPane.showInputDialog(this, "Digite o novo nome:");
+                    String novoCPF = JOptionPane.showInputDialog(this, "Digite o novo CPF:");
+                    String novoRG = JOptionPane.showInputDialog(this, "Digite o novo RG:");
+                    String novaDataNascimentoString = JOptionPane.showInputDialog(this, "Digite a nova data de nascimento (dd/MM/yyyy):");
+                    String novoEmail = JOptionPane.showInputDialog(this, "Digite o novo e-mail:");
+                    String novoNumeroCartao = JOptionPane.showInputDialog(this, "Digite o novo número do cartão:");
 
-            if (novoNome != null && novoCPF != null) {
-                PacienteDAO pacienteDAO = new PacienteDAO(); // Cria uma instância da classe
-                List<Paciente> pacientes = pacienteDAO.listarPacientes();
+                    pacienteSelecionado.setNome(novoNome);
+                    pacienteSelecionado.setCpf(novoCPF);
+                    pacienteSelecionado.setRg(novoRG);
 
-                if (!pacientes.isEmpty()) {
-                    Paciente paciente = pacientes.get(linhaSelecionada);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date novaDataNascimento = dateFormat.parse(novaDataNascimentoString);
+                    pacienteSelecionado.setDataNascimento(novaDataNascimento);
 
-                    if (!novoNome.isEmpty()) {
-                        paciente.setNome(novoNome);
+                    pacienteSelecionado.setEmail(novoEmail);
+                    pacienteSelecionado.setNumeroCartao(novoNumeroCartao);
+
+                    boolean atualizacaoBemSucedida = pacienteDAO.atualizarPaciente(pacienteSelecionado);
+
+                    if (atualizacaoBemSucedida) {
+                        JOptionPane.showMessageDialog(this, "Informações do Paciente atualizadas com sucesso!");
+                        
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Falha ao atualizar informações do Paciente.");
                     }
-
-                    if (!novoCPF.isEmpty()) {
-                        paciente.setCpf(novoCPF);
-                    }
-
-                    // Adicione outros campos que você deseja atualizar
-                    pacienteDAO.atualizarPaciente(paciente);
-                    preencheTabelaPacientes(pacienteDAO.listarPacientes());
-
-                    JOptionPane.showMessageDialog(this, "Dados do paciente atualizados com sucesso!");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Lista de pacientes está vazia.");
+                } catch (ParseException e) {
+                    JOptionPane.showMessageDialog(this, "Formato de data inválido. Use o formato dd/MM/yyyy.");
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Paciente não encontrado.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione um paciente para atualizar os dados.");
         }
-
-
     }//GEN-LAST:event_btnAtualizarActionPerformed
 
     /**
