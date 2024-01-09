@@ -1,6 +1,6 @@
 # Sistema de Consultas
 
-Este projeto é um software de gerenciamento de consultas médicas desenvolvido em Java, utilizando JavaFX para a interface gráfica e MySQL para armazenamento de dados.
+Este projeto é um software de gerenciamento de consultas médicas desenvolvido em Java, utilizando Java Swing para a interface gráfica e MySQL para armazenamento de dados.
 
 ## Descrição
 
