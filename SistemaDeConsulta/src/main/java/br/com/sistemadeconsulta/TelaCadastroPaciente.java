@@ -2,7 +2,8 @@ package br.com.sistemadeconsulta;
 
 import br.com.sistemadeconsulta.classes.Paciente;
 import br.com.sistemadeconsulta.dao.PacienteDAO;
-import com.google.protobuf.TextFormat.ParseException;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -73,7 +74,11 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         brnSalvar.setText("Salvar");
         brnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                brnSalvarActionPerformed(evt);
+                try {
+                    brnSalvarActionPerformed(evt);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -184,7 +189,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void brnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnSalvarActionPerformed
+    private void brnSalvarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {//GEN-FIRST:event_brnSalvarActionPerformed
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         String rg = txtRG.getText();
@@ -192,7 +197,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         String dataNascimentoString = txtNascimento.getText();
         String numeroCartao = txtCartao.getText();
 
-// Verifica se todos os campos estão preenchidos
+        // Verifica se todos os campos estão preenchidos
         if (!nome.isEmpty() && !cpf.isEmpty() && !rg.isEmpty() && !email.isEmpty() && !dataNascimentoString.isEmpty() && !numeroCartao.isEmpty()) {
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -208,28 +213,37 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
                 novoPaciente.setDataNascimento(dataNascimento);
                 novoPaciente.setNumeroCartao(numeroCartao);
 
-                PacienteDAO pacienteDAO = new PacienteDAO();
+                // Verifica se o CPF é válido
+                if (novoPaciente.validarCPF()) {
+                    // Verifica se o RG é válido
+                    if (novoPaciente.validarRG()) {
+                        PacienteDAO pacienteDAO = new PacienteDAO();
 
-                try {
-                    // Chama o método salvarPaciente do PacienteDAO
-                    pacienteDAO.salvarPaciente(novoPaciente);
+                        try {
+                            // Chama o método salvarPaciente do PacienteDAO
+                            pacienteDAO.salvarPaciente(novoPaciente);
 
-                    JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-                    dispose();
+                            JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+                            dispose();
 
-                    TelaLoginPaciente telaLogin = new TelaLoginPaciente();
-                    telaLogin.setVisible(true);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
+                            TelaLoginPaciente telaLogin = new TelaLoginPaciente();
+                            telaLogin.setVisible(true);
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "RG inválido. Verifique os números digitados.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "CPF inválido. Verifique o número digitado.");
                 }
             } catch (java.text.ParseException ex) {
-                Logger.getLogger(TelaCadastroPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Formato de data inválido. Utilize o formato dd/MM/yyyy.");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos para cadastrar o paciente.");
         }
-
-    }//GEN-LAST:event_brnSalvarActionPerformed
+    }
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         TelaLoginPaciente telapaciente = new TelaLoginPaciente();

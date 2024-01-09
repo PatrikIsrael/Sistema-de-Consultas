@@ -26,13 +26,6 @@ public class Paciente {
     @Column(name = "numero_cartao")
     private String numeroCartao;
 
-    public Long getIdPaciente() {
-        return idPaciente;
-    }
-
-    public void setIdPaciente(Long idPaciente) {
-        this.idPaciente = idPaciente;
-    }
 
     public String getNome() {
         return nome;
@@ -80,5 +73,14 @@ public class Paciente {
 
     public void setNumeroCartao(String numeroCartao) {
         this.numeroCartao = numeroCartao;
+    }
+
+
+    public boolean validarCPF() {
+        return this.cpf != null && this.cpf.length() == 11;
+    }
+
+    public boolean validarRG() {
+        return this.rg != null && this.rg.length() <= 7;
     }
 }
