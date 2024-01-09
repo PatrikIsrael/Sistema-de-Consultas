@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -21,7 +20,7 @@ public class MarcadorConsultas extends javax.swing.JFrame {
 
     private final ConsultaDAO consultaDAO;
     private final EquipeMedicaDAO equipeMedicaDAO;
-    private Date dataSelecionada;
+
 
     public MarcadorConsultas() {
         initComponents();
@@ -45,8 +44,6 @@ public class MarcadorConsultas extends javax.swing.JFrame {
                 }
 
                 jboxEquipeMedica.setModel(new DefaultComboBoxModel<>(nomesEquipes));
-            } else {
-                // Tratar caso não seja possível carregar as equipes médicas
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ocorreu uma falha:\n" + e.getMessage());
@@ -58,25 +55,12 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         jComboBoxHoras.setModel(new DefaultComboBoxModel<>(horas));
     }
 
-    private void reloadHorariosDisponiveis(String horarioOcupado) {
-        String[] novosHorarios = new String[jComboBoxHoras.getItemCount() - 1];
-        int index = 0;
 
-        for (int i = 0; i < jComboBoxHoras.getItemCount(); i++) {
-            String hora = jComboBoxHoras.getItemAt(i);
-
-            if (!hora.equals(horarioOcupado)) {
-                novosHorarios[index] = hora;
-                index++;
-            }
-        }
-
-        jComboBoxHoras.setModel(new DefaultComboBoxModel<>(novosHorarios));
-    }
 
   private EquipeMedica buscarEquipeMedicaSelecionada() {
     try {
         String nomeEquipeSelecionada = (String) jboxEquipeMedica.getSelectedItem();
+        assert nomeEquipeSelecionada != null;
         String nomeMedicoSelecionado = nomeEquipeSelecionada.split(" - ")[0];
         // Busca a equipe médica pelo nome do médico selecionado
         return equipeMedicaDAO.buscarEquipeMedicaPorNome(nomeMedicoSelecionado);
@@ -259,6 +243,7 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         int mes = calendar.get(Calendar.MONTH) + 1;
         int ano = calendar.get(Calendar.YEAR);
 
+
         try {
             LocalTime horaSelecionada = LocalTime.parse(horaSelecionadaString);
             LocalDate dataSelecionada = LocalDate.of(ano, mes, dia);
@@ -273,6 +258,9 @@ public class MarcadorConsultas extends javax.swing.JFrame {
                 consultaDAO.agendarConsulta(consulta);
                 JOptionPane.showMessageDialog(this, "Consulta agendada com sucesso!");
 
+                // Recarrega os horários disponíveis após o agendamento
+                reloadHorariosDisponiveis(horaSelecionadaString);
+
                 TelaInicial telaInicial = new TelaInicial();
                 telaInicial.setVisible(true);
                 this.dispose();
@@ -284,11 +272,22 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         }
     }
 
-    private EquipeMedica buscarEquipeMedicaPorNome(String nomeEquipe) {
-        return equipeMedicaDAO.buscarEquipeMedicaPorNome(nomeEquipe);
+    private void reloadHorariosDisponiveis(String horarioOcupado) {
+        String[] novosHorarios = new String[jComboBoxHoras.getItemCount() - 1];
+        int index = 0;
 
+        for (int i = 0; i < jComboBoxHoras.getItemCount(); i++) {
+            String hora = jComboBoxHoras.getItemAt(i);
 
-    }//GEN-LAST:event_btnMarcarConsulta1ActionPerformed
+            if (!hora.equals(horarioOcupado)) {
+                novosHorarios[index] = hora;
+                index++;
+            }
+        }
+
+        jComboBoxHoras.setModel(new DefaultComboBoxModel<>(novosHorarios));
+    }
+
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
