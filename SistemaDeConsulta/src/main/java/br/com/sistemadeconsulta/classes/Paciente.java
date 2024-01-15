@@ -13,9 +13,7 @@ public class Paciente {
     private Long idPaciente;
 
     private String nome;
-
     private String cpf;
-
     private String rg;
 
     @Column(name = "data_nascimento")
@@ -26,6 +24,16 @@ public class Paciente {
     @Column(name = "numero_cartao")
     private String numeroCartao;
 
+    @Column(name = "numero_telefone")
+    private String numeroTelefone;
+
+    public Long getIdPaciente() {
+        return idPaciente;
+    }
+
+    public void setIdPaciente(Long idPaciente) {
+        this.idPaciente = idPaciente;
+    }
 
     public String getNome() {
         return nome;
@@ -75,6 +83,13 @@ public class Paciente {
         this.numeroCartao = numeroCartao;
     }
 
+    public String getNumeroTelefone() {
+        return numeroTelefone;
+    }
+
+    public void setNumeroTelefone(String numeroTelefone) {
+        this.numeroTelefone = numeroTelefone;
+    }
 
     public boolean validarCPF() {
         return this.cpf != null && this.cpf.length() == 11;
@@ -82,5 +97,9 @@ public class Paciente {
 
     public boolean validarRG() {
         return this.rg != null && this.rg.length() <= 7;
+    }
+    
+    public boolean ValidarTelefone(){
+        return this.numeroTelefone != null && this.numeroTelefone.length() == 11;
     }
 }

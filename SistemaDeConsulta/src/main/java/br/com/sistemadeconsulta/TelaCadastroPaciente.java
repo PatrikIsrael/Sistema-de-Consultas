@@ -1,9 +1,9 @@
 package br.com.sistemadeconsulta;
 
+import br.com.sistemadeconsulta.TelaLoginPaciente;
 import br.com.sistemadeconsulta.classes.Paciente;
 import br.com.sistemadeconsulta.dao.PacienteDAO;
-
-import java.text.ParseException;
+import com.google.protobuf.TextFormat.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -50,6 +50,8 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         btnVoltar = new javax.swing.JToggleButton();
         jLabel7 = new javax.swing.JLabel();
         txtNascimento = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtTelefone = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,7 +68,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         jLabel4.setText("RG :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel5.setText("Email");
+        jLabel5.setText("Email:");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel6.setText("Numero Cartão :");
@@ -74,11 +76,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         brnSalvar.setText("Salvar");
         brnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    brnSalvarActionPerformed(evt);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+                brnSalvarActionPerformed(evt);
             }
         });
 
@@ -91,6 +89,9 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel7.setText("Data Nascimento :");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jLabel8.setText("Telefone :");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -116,23 +117,25 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
                             .addContainerGap()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel2)
-                                .addComponent(jLabel5)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(6, 6, 6)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel4)
-                                        .addComponent(jLabel3))))
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel5)))
+                                .addComponent(jLabel8))
                             .addGap(18, 18, 18)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                                 .addComponent(txtCPF)
                                 .addComponent(txtRG)
-                                .addComponent(txtEmail))))
+                                .addComponent(txtEmail)
+                                .addComponent(txtTelefone))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +161,11 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -189,15 +196,16 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void brnSalvarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {//GEN-FIRST:event_brnSalvarActionPerformed
+    private void brnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnSalvarActionPerformed
         String nome = txtNome.getText();
         String cpf = txtCPF.getText();
         String rg = txtRG.getText();
         String email = txtEmail.getText();
+        String numeroTelefone = txtTelefone.getText();
         String dataNascimentoString = txtNascimento.getText();
         String numeroCartao = txtCartao.getText();
 
-        // Verifica se todos os campos estão preenchidos
+// Verifica se todos os campos estão preenchidos
         if (!nome.isEmpty() && !cpf.isEmpty() && !rg.isEmpty() && !email.isEmpty() && !dataNascimentoString.isEmpty() && !numeroCartao.isEmpty()) {
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -210,40 +218,32 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
                 novoPaciente.setCpf(cpf);
                 novoPaciente.setRg(rg);
                 novoPaciente.setEmail(email);
+                novoPaciente.setNumeroTelefone(numeroTelefone);
                 novoPaciente.setDataNascimento(dataNascimento);
                 novoPaciente.setNumeroCartao(numeroCartao);
 
-                // Verifica se o CPF é válido
-                if (novoPaciente.validarCPF()) {
-                    // Verifica se o RG é válido
-                    if (novoPaciente.validarRG()) {
-                        PacienteDAO pacienteDAO = new PacienteDAO();
+                PacienteDAO pacienteDAO = new PacienteDAO();
 
-                        try {
-                            // Chama o método salvarPaciente do PacienteDAO
-                            pacienteDAO.salvarPaciente(novoPaciente);
+                try {
+                    // Chama o método salvarPaciente do PacienteDAO
+                    pacienteDAO.salvarPaciente(novoPaciente);
 
-                            JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-                            dispose();
+                    JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+                    dispose();
 
-                            TelaLoginPaciente telaLogin = new TelaLoginPaciente();
-                            telaLogin.setVisible(true);
-                        } catch (Exception e) {
-                            JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "RG inválido. Verifique os números digitados.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "CPF inválido. Verifique o número digitado.");
+                    TelaLoginPaciente telaLogin = new TelaLoginPaciente();
+                    telaLogin.setVisible(true);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Falha ao cadastrar o paciente: " + e.getMessage());
                 }
             } catch (java.text.ParseException ex) {
-                JOptionPane.showMessageDialog(this, "Formato de data inválido. Utilize o formato dd/MM/yyyy.");
+                Logger.getLogger(TelaCadastroPaciente.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos para cadastrar o paciente.");
         }
-    }
+
+    }//GEN-LAST:event_brnSalvarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         TelaLoginPaciente telapaciente = new TelaLoginPaciente();
@@ -296,6 +296,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCPF;
     private javax.swing.JTextField txtCartao;
@@ -303,6 +304,7 @@ public class TelaCadastroPaciente extends javax.swing.JFrame {
     private javax.swing.JTextField txtNascimento;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtRG;
+    private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 
 }
