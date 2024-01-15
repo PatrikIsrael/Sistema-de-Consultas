@@ -98,7 +98,7 @@ public class Paciente {
     public boolean validarRG() {
         return this.rg != null && this.rg.length() <= 7;
     }
-    
+
     public boolean ValidarTelefone(){
         return this.numeroTelefone != null && this.numeroTelefone.length() == 11;
     }
