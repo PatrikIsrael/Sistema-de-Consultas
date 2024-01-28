@@ -10,22 +10,28 @@ O Sistema de Consultas Médicas é uma aplicação desktop que visa simplificar 
 
 ### Autenticação Segura
 - Tela de login com autenticação segura para controle de acesso aos diferentes módulos do sistema.
+  ![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/d9ae07ec-2c84-4d47-8d8a-6494079b6bed)
+  ![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/1dedb1ee-9ca8-45fb-a94a-1c0d889557d8)
 
 ### Cadastro de Usuários
 - Permite o registro seguro de novos usuários, com informações detalhadas e credenciais de acesso.
-![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/d08a1652-3799-4f84-9f65-ab47c173b41d)
-
-### Agendamento e Gerenciamento de Consultas
+  ![Tela Cadastro](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/febeb5ca-5a91-45f4-835c-a90f633ab349)
+  
+### Agendamento de Consultas
 - Interface intuitiva para agendamento de consultas médicas.
 - Visão geral das consultas marcadas para médicos e pacientes.
-- Possibilidade de editar, cancelar ou reagendar consultas existentes.
+  ![Agendamento de consulta](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/2f4f1f93-0f16-459c-b354-4cafd64c9e7e)
 
+### Administração (Usuario = admin / senha = admin123)
+- Administração das equipes médicas, podendo cadastrar, excluir e editar as equipes.
+  ![Administração de Equipes](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/9206473d-cf0c-4502-ab9a-213cc04059c4)
   
-![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/83385dcb-2e8e-4129-8ff5-2caaa4705e2c)
-![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/9ef213f6-6851-4407-9fe0-a4a6207367bf)
-![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/1f42eaa8-961b-4ea9-82d0-6823fd3bea18)
-![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/006ef181-05d1-4b37-ae98-0fa428e1f77d)
-![image](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/a510158f-1652-44e6-9f7d-69988934708b)
+- Administração dos pacientes, podendo pesquisar, excluir e editar dados dos pacientes.
+  ![Administração de pacientes](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/764f29ba-10df-4cde-a1c4-feb745893fe3)
+  
+- Administração das consultas, podendo atualizar, excluir e pesquisar consultas.
+  ![Administração de consultas](https://github.com/PatrikIsrael/Sistema-de-Consultas/assets/119878626/c4992474-8697-467a-a84c-1d1f40aef662)
+
 
 
 ### Banco de Dados MySQL
@@ -44,4 +50,4 @@ Contribuições são bem-vindas! Se deseja melhorar ou adicionar funcionalidades
 
 ## Autor
 
-Patrik Israel - patrik-israel@hotmail.com
+Patrik Israel - [LinkedIn](https://www.linkedin.com/in/patrik-israel-22173024a/) - patrik-israel@hotmail.com
