@@ -4,13 +4,14 @@ import br.com.sistemadeconsulta.classes.Consulta;
 import br.com.sistemadeconsulta.classes.EquipeMedica;
 import br.com.sistemadeconsulta.dao.ConsultaDAO;
 import br.com.sistemadeconsulta.dao.EquipeMedicaDAO;
+import br.com.sistemadeconsulta.utils.TextUtils;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  *
@@ -71,71 +72,48 @@ public class MarcadorConsultas extends javax.swing.JFrame {
 
     }
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        btnMarcarConsulta1 = new javax.swing.JToggleButton();
-        btnSair = new javax.swing.JToggleButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        TextUtils textUtils = new TextUtils();
+
+        javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
+        // Variables declaration - do not modify//GEN-BEGIN:variables
+        javax.swing.JToggleButton btnMarcarConsulta1 = new javax.swing.JToggleButton();
+        javax.swing.JToggleButton btnSair = new javax.swing.JToggleButton();
+        javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
+        javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
         jboxEquipeMedica = new javax.swing.JComboBox<>();
-        btnVoltar = new javax.swing.JToggleButton();
+        javax.swing.JToggleButton btnVoltar = new javax.swing.JToggleButton();
         jComboBoxHoras = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
         txtNomePaciente = new javax.swing.JTextField();
         jDayChooser1 = new com.toedter.calendar.JDayChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel1.setText("Selecione a data da consulta");
+        textUtils.setLabel(jLabel1, "Selecione a data da consulta");
 
         btnMarcarConsulta1.setText("Marcar Consulta");
-        btnMarcarConsulta1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMarcarConsulta1ActionPerformed(evt);
-            }
-        });
+        btnMarcarConsulta1.addActionListener(evt -> btnMarcarConsulta1ActionPerformed());
 
         btnSair.setText("Sair");
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
-            }
-        });
+        btnSair.addActionListener(evt -> btnSairActionPerformed());
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel2.setText("Selecione a hora da consultar");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel3.setText("Selecione Equipe médica");
+        textUtils.setLabel(jLabel2, "Selecione a hora da consultar");
+        textUtils.setLabel(jLabel3, "Selecione Equipe médica");
 
         jboxEquipeMedica.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jboxEquipeMedica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jboxEquipeMedicaActionPerformed(evt);
-            }
-        });
+        jboxEquipeMedica.addActionListener(evt -> jboxEquipeMedicaActionPerformed());
 
         btnVoltar.setText("Voltar");
-        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVoltarActionPerformed(evt);
-            }
-        });
+        btnVoltar.addActionListener(evt -> btnVoltarActionPerformed());
 
         jComboBoxHoras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBoxHoras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxHorasActionPerformed(evt);
-            }
-        });
+        jComboBoxHoras.addActionListener(evt -> jComboBoxHorasActionPerformed());
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel4.setText("Nome Paciente");
+        textUtils.setLabel(jLabel4, "Nome Paciente");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -218,10 +196,9 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnMarcarConsulta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcarConsulta1ActionPerformed
+    private void btnMarcarConsulta1ActionPerformed() {//GEN-FIRST:event_btnMarcarConsulta1ActionPerformed
 
         int diaSelecionado = jDayChooser1.getDay();
-
 
         // Obtendo os valores de hora e equipe médica selecionados
         String horaSelecionadaString = (String) jComboBoxHoras.getSelectedItem();
@@ -229,7 +206,7 @@ public class MarcadorConsultas extends javax.swing.JFrame {
         EquipeMedica equipeMedica = buscarEquipeMedicaSelecionada();
 
         // Verificação de campos vazios e equipe médica encontrada
-        if (horaSelecionadaString.isEmpty() || nomePaciente.isEmpty() || equipeMedica == null) {
+        if (horaSelecionadaString != null && horaSelecionadaString.isEmpty() || nomePaciente.isEmpty() || equipeMedica == null) {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos para marcar a consulta.");
             return;
         }
@@ -245,7 +222,8 @@ public class MarcadorConsultas extends javax.swing.JFrame {
 
 
         try {
-            LocalTime horaSelecionada = LocalTime.parse(horaSelecionadaString);
+
+            LocalTime horaSelecionada = horaSelecionadaString != null ? LocalTime.parse(horaSelecionadaString) : LocalTime.now();
             LocalDate dataSelecionada = LocalDate.of(ano, mes, dia);
 
             Consulta consulta = new Consulta();
@@ -289,28 +267,28 @@ public class MarcadorConsultas extends javax.swing.JFrame {
     }
 
 
-    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+    private void btnSairActionPerformed() {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+    private void btnVoltarActionPerformed() {//GEN-FIRST:event_btnVoltarActionPerformed
         TelaLoginPaciente pacientelogin = new TelaLoginPaciente();
         pacientelogin.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
-    private void jboxEquipeMedicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxEquipeMedicaActionPerformed
+    private void jboxEquipeMedicaActionPerformed() {//GEN-FIRST:event_jboxEquipeMedicaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jboxEquipeMedicaActionPerformed
 
-    private void jComboBoxHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxHorasActionPerformed
+    private void jComboBoxHorasActionPerformed() {//GEN-FIRST:event_jComboBoxHorasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxHorasActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -324,43 +302,18 @@ public class MarcadorConsultas extends javax.swing.JFrame {
 
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MarcadorConsultas.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MarcadorConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MarcadorConsultas().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new MarcadorConsultas().setVisible(true));
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnMarcarConsulta1;
-    private javax.swing.JToggleButton btnSair;
-    private javax.swing.JToggleButton btnVoltar;
     private javax.swing.JComboBox<String> jComboBoxHoras;
     private com.toedter.calendar.JDayChooser jDayChooser1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> jboxEquipeMedica;
     private javax.swing.JTextField txtNomePaciente;
     // End of variables declaration//GEN-END:variables
