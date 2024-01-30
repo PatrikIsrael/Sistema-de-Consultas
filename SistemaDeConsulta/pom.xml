@@ -51,6 +51,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>br.com.sistemadeconsulta.TelaInicial</exec.mainClass>
         <maven.compiler.release>19</maven.compiler.release>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
     </properties>
     <name>SistemaDeConsulta</name>
 </project>

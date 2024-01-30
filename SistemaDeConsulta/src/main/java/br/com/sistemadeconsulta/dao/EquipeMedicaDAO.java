@@ -8,7 +8,6 @@ import java.util.Map;
 import br.com.sistemadeconsulta.classes.EquipeMedica;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
@@ -37,16 +36,14 @@ public class EquipeMedicaDAO {
         emf.close();
     }
 
-    public int atualizar(EquipeMedica equipeMedica) {
+    public void atualizar(EquipeMedica equipeMedica) {
         try {
             em.getTransaction().begin();
             em.merge(equipeMedica);
             em.getTransaction().commit();
-            return 1;
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();
-            return 0;
         }
     }
 
@@ -122,15 +119,13 @@ public class EquipeMedicaDAO {
         }
     }
 
-    public int salvar(EquipeMedica equipeMedica) {
+    public void salvar(EquipeMedica equipeMedica) {
         try {
             em.getTransaction().begin();
             em.persist(equipeMedica);
             em.getTransaction().commit();
-            return 1;
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
     }
 
